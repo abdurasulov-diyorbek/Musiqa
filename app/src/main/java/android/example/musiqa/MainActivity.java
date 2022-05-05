@@ -11,7 +11,9 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import java.io.File;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
@@ -23,6 +25,8 @@ public class MainActivity extends AppCompatActivity {
     Handler handler;
     Runnable runnable;
 
+    private int position;
+    private String mSongName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,14 +78,19 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
 
+        ArrayList<Music> mySongs = (ArrayList) bundle.getParcelableArrayList("song");
+        mSongName = mySongs.get(position).getSongName();
+
         String songNames = intent.getStringExtra("name");
-        songName.setText("Ring my bells");
+
+        songName.setText(songNames);
         songName.setSelected(true);
 
-
-
-        myMediaPlayer = MediaPlayer.create(MainActivity.this, R.raw.ring_my_bells);
+        position = bundle.getInt("position", 0);
+        Uri uri = Uri.parse(mySongs.get(position).toString());
+        myMediaPlayer = MediaPlayer.create(MainActivity.this, uri);
         myMediaPlayer.start();
+
 
         seekBar.setMax(myMediaPlayer.getDuration());
         playCycle();

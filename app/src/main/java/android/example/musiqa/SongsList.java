@@ -12,6 +12,7 @@ import android.widget.ListView;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.io.Serializable;
 
 public class SongsList extends AppCompatActivity {
 
@@ -35,8 +36,12 @@ public class SongsList extends AppCompatActivity {
 
                 String songName = listView.getItemAtPosition(position).toString();
                 Intent intent = new Intent(SongsList.this, MainActivity.class);
+                intent.putExtra("song", songs);
                 intent.putExtra("name", songName);
+                intent.putExtra("position", position);
                 startActivity(intent);
+
+
             }
         });
     }
